@@ -1,0 +1,46 @@
+name: Noetic Build and Test
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**/README.md'
+      - '**/*.rviz'
+      - '**/*.png'
+  pull_request:
+    branches:
+      - master
+
+  # This workflow is triggered by a scheduled event that runs at 1 AM UTC every day.
+  schedule:
+    - cron: "0 1 * * *"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+  
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    env:
+      ROS_DISTRO: noetic
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Setup ROS
+        uses: ros-tooling/setup-ros@v0.6
+        with:
+          required-ros-distributions: noetic
+
+      - name: Install dependencies
+        run: ./.ci/ci_install_dependencies.sh
+
+      - name: Build
+        run: ./.ci/ci_test_build.sh
+
+      - name: Test
+        run: ./.ci/ci_run_tests.sh

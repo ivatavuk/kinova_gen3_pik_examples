@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="kinova_gen3_pik_examples" type="spraying_pik_examples" name="spraying_pik_examples" ns="my_gen3" output="screen"/>
+</launch>
