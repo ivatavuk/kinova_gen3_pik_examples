@@ -1,6 +1,6 @@
 # Kinova Gen3 Prioritized Inverse Kinematics examples
 
-[![Noetic build and test](https://github.com/ivatavuk/kinova_gen3_pik_examples/actions/workflows/noetic.yml/badge.svg)](https://ivatavuk/kinova_gen3_pik_examples/actions/workflows/noetic.yml)
+[![Noetic build and test](https://github.com/ivatavuk/kinova_gen3_pik_examples/actions/workflows/noetic.yml/badge.svg)](https://github.com/ivatavuk/kinova_gen3_pik_examples/actions/workflows/noetic.yml)
 
 Examples for Prioritized Inverse Kinematics ROS library [`pik_ros`](https://github.com/ivatavuk/pik_ros) with a Kinova Gen3 robot arm.
 
