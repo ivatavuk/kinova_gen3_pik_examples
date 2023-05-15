@@ -1,4 +1,4 @@
-# Kinova Gen3 Prioritized Inverse Kinematics examples
+# Kinova Gen3 PIK ROS examples
 
 [![Noetic build and test](https://github.com/ivatavuk/kinova_gen3_pik_examples/actions/workflows/noetic.yml/badge.svg)](https://github.com/ivatavuk/kinova_gen3_pik_examples/actions/workflows/noetic.yml)
 
