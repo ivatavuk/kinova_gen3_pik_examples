@@ -25,19 +25,10 @@ RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 RUN apt-get update && apt-get install -y ros-noetic-desktop-full
 
-# Set up ROS environment
 RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
 
 # Install colcon-common-extensions
 RUN pip3 install colcon-common-extensions
-
-# Create a catkin workspace
-RUN mkdir -p /root/catkin_ws/src
-WORKDIR /root/catkin_ws
-RUN /bin/bash -c '. /opt/ros/noetic/setup.bash; catkin_make'
-
-# Set up the catkin workspace environment
-RUN echo "source /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
 
 # Install additional ROS packages
 RUN apt-get update && apt-get install -y \
@@ -53,9 +44,11 @@ RUN apt-get update && apt-get install -y \
     ros-noetic-gazebo-ros-pkgs \
     ros-noetic-gazebo-plugins \
     ros-noetic-gazebo-msgs \
-    ros-noetic-gazebo-dev
+    ros-noetic-gazebo-dev \
+    ros-noetic-ros-controllers
 
-RUN apt-get install -y libeigen3-dev
+RUN apt-get update
+RUN apt-get upgrade -y
 
 #install osqp from source
 WORKDIR /root
@@ -67,6 +60,9 @@ RUN cmake -G "Unix Makefiles" ..
 RUN cmake --build . 
 RUN cmake --build . --target install
     
+#Install Eigen3
+RUN apt-get install -y libeigen3-dev
+
 #install osqp-eigen from source
 WORKDIR /root
 RUN git clone https://github.com/robotology/osqp-eigen.git
@@ -88,37 +84,42 @@ RUN make
 RUN make install
 RUN ctest
 
-#install pik-ros
+#Install catkin tools and initialize a catkin ws
+RUN apt-get install -y python3-catkin-tools
+RUN mkdir -p ~/catkin_ws/src
 WORKDIR /root/catkin_ws
+RUN catkin init
 
 #install ros_kortex
-RUN apt-get update && \
-    apt-get install -y python3-rosdep && \
-    rosdep init && \
-    rosdep update
 RUN apt install python3 python3-pip
 RUN python3 -m pip install conan==1.59
 RUN conan config set general.revisions_enabled=1
 RUN conan profile new default --detect > /dev/null
 RUN conan profile update settings.compiler.libcxx=libstdc++11 default
-#For now its private - so you need ssh key
-#RUN git clone git@github.com:ivatavuk/pik_ros.git
+
 WORKDIR /root/catkin_ws/src
 RUN git clone -b noetic-devel https://github.com/Kinovarobotics/ros_kortex.git
+RUN git clone -b master https://github.com/ivatavuk/pik_ros.git
+
 WORKDIR /root/catkin_ws
-#RUN rosdep install --from-paths src --ignore-src -y
-#RUN catkin_make
-RUN bash -c "source /opt/ros/noetic/setup.bash"
-ENV PATH="/opt/ros/noetic/bin:${PATH}"
+RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash; catkin build'
 
+WORKDIR /root/catkin_ws/src
+RUN git clone -b master https://github.com/ivatavuk/kinova_gen3_pik_examples.git
 
-RUN /bin/bash -c '. /opt/ros/noetic/setup.bash; catkin_make'
+WORKDIR /root/catkin_ws/src/kinova_gen3_pik_examples
+RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash; catkin build --this'
 
+RUN echo "source ~/catkin_ws/devel/setup.bash" >> /root/.bashrc
+
+WORKDIR /root
+
+#Install handy packages
 RUN apt install -y tmux
-RUN apt install -y ros-noetic-ros-controllers
 RUN apt install -y gitg
 RUN apt install -y git-gui
 RUN apt install -y htop
+
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
