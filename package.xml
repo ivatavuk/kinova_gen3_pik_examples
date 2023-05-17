@@ -11,6 +11,10 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <build_depend>pik_ros</build_depend>
+
+  <exec_depend>pik_ros</exec_depend>
+
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->
