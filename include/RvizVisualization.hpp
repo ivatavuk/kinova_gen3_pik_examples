@@ -13,21 +13,21 @@
 
 class RvizVisualization
 {
-
 public:
-  RvizVisualization(ros::NodeHandle &nh);
+  RvizVisualization(ros::NodeHandle& nh);
 
-  void publishVisualizationPoints(const Eigen::Vector3d &desired_elbow_position, 
-                                  const Eigen::Vector3d &desired_tool_position,
-                                  const Eigen::VectorXd &desired_tool_orientation );
+  void publishVisualizationPoints(const Eigen::Vector3d& desired_elbow_position,
+                                  const Eigen::Vector3d& desired_tool_position,
+                                  const Eigen::VectorXd& desired_tool_orientation);
 
-  void publishVisualizationPointsSpraying(const Eigen::Vector3d &desired_elbow_position, 
-                                          const Eigen::Vector3d &desired_tool_position,
-                                          const Eigen::Vector3d &desired_approach_vector );
+  void publishVisualizationPointsSpraying(const Eigen::Vector3d& desired_elbow_position,
+                                          const Eigen::Vector3d& desired_tool_position,
+                                          const Eigen::Vector3d& desired_approach_vector);
+
 private:
   ros::NodeHandle nh_;
   ros::Publisher desired_elbow_position_pub_, desired_tool_position_pub_;
   ros::Publisher approach_vector_pose_pub_, desired_tool_pose_pub_;
-}; 
+};
 
-#endif //RVIZ_VISUALIZATION_HPP_
+#endif  // RVIZ_VISUALIZATION_HPP_

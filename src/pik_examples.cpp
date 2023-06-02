@@ -6,7 +6,7 @@
 #include <Eigen/Dense>
 #include "RvizVisualization.hpp"
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
   //-----------------Initialization------------------
   ros::init(argc, argv, "pik_examples");
@@ -29,8 +29,8 @@ int main(int argc, char **argv)
   settings.ang_err_clamp_magnitude = 30 * M_PI / 180.0;
   settings.lin_err_clamp_magnitude = 0.3;
 
-  settings.debug_mode = false; 
-  
+  settings.debug_mode = false;
+
   PikRos::Pik pik_kinova(nh, "my_gen3", "arm", settings);
 
   Eigen::VectorXd start_q(7);
@@ -51,16 +51,15 @@ int main(int argc, char **argv)
 
   desired_tool_pose << desired_tool_position, desired_tool_orientation;
 
-  std::vector<PikRos::IkTask> ik_tasks{ PikRos::IkTask( PikRos::FRAME_POSE, "tool_frame", desired_tool_pose ), 
-                                        PikRos::IkTask( PikRos::FRAME_POSITION, "forearm_link", desired_elbow_position )};
+  std::vector<PikRos::IkTask> ik_tasks{ PikRos::IkTask(PikRos::FRAME_POSE, "tool_frame", desired_tool_pose),
+                                        PikRos::IkTask(PikRos::FRAME_POSITION, "forearm_link", desired_elbow_position) };
 
   std::cout << "\n\nPress Enter to solve task 1\n\n";
-  std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   rviz_vis.publishVisualizationPoints(desired_elbow_position, desired_tool_position, desired_tool_orientation);
   std::cout << "Solving task 1...\n";
 
-  q = pik_kinova.solve( ik_tasks,
-                        start_q );
+  q = pik_kinova.solve(ik_tasks, start_q);
 
   std::cout << "Errors:\n";
   pik_kinova.printErrors(q, ik_tasks);
@@ -73,17 +72,18 @@ int main(int argc, char **argv)
   desired_tool_orientation << 0.5, 0.5, 0.5, 0.5;
   desired_elbow_position << -1.0, -0.3, 1.0;
 
-  std::vector<PikRos::IkTask> ik_tasks_2{ PikRos::IkTask( PikRos::FRAME_POSITION, "tool_frame", desired_tool_position ), 
-                                          PikRos::IkTask( PikRos::FRAME_ORIENTATION, "tool_frame", desired_tool_orientation ), 
-                                          PikRos::IkTask( PikRos::FRAME_POSITION, "forearm_link", desired_elbow_position )};
+  std::vector<PikRos::IkTask> ik_tasks_2{
+    PikRos::IkTask(PikRos::FRAME_POSITION, "tool_frame", desired_tool_position),
+    PikRos::IkTask(PikRos::FRAME_ORIENTATION, "tool_frame", desired_tool_orientation),
+    PikRos::IkTask(PikRos::FRAME_POSITION, "forearm_link", desired_elbow_position)
+  };
 
   std::cout << "\n\nPress Enter to solve task 2\n\n";
-  std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   rviz_vis.publishVisualizationPoints(desired_elbow_position, desired_tool_position, desired_tool_orientation);
   std::cout << "Solving task 2...\n";
 
-  q = pik_kinova.solve( ik_tasks_2,
-                        start_q );
+  q = pik_kinova.solve(ik_tasks_2, start_q);
 
   std::cout << "Errors:\n";
   pik_kinova.printErrors(q, ik_tasks_2);
@@ -98,18 +98,19 @@ int main(int argc, char **argv)
 
   desired_tool_pose << desired_tool_position, desired_tool_orientation;
 
-  std::vector<PikRos::IkTask> ik_tasks_3{ PikRos::IkTask( PikRos::FRAME_POSITION, "tool_frame", desired_tool_position ), 
-                                          PikRos::IkTask( PikRos::FRAME_ORIENTATION, "tool_frame", desired_tool_orientation ),
-                                          //PikRos::IkTask( PikRos::FRAME_POSE, "tool_frame", desired_tool_pose ),  
-                                          PikRos::IkTask( PikRos::FRAME_POSITION, "forearm_link", desired_elbow_position )};
+  std::vector<PikRos::IkTask> ik_tasks_3{
+    PikRos::IkTask(PikRos::FRAME_POSITION, "tool_frame", desired_tool_position),
+    PikRos::IkTask(PikRos::FRAME_ORIENTATION, "tool_frame", desired_tool_orientation),
+    // PikRos::IkTask( PikRos::FRAME_POSE, "tool_frame", desired_tool_pose ),
+    PikRos::IkTask(PikRos::FRAME_POSITION, "forearm_link", desired_elbow_position)
+  };
 
   std::cout << "\n\nPress Enter to solve task 3\n\n";
-  std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   rviz_vis.publishVisualizationPoints(desired_elbow_position, desired_tool_position, desired_tool_orientation);
   std::cout << "Solving task 3...\n";
 
-  q = pik_kinova.solve( ik_tasks_3,
-                        start_q );
+  q = pik_kinova.solve(ik_tasks_3, start_q);
 
   std::cout << "Errors:\n";
   pik_kinova.printErrors(q, ik_tasks_3);
@@ -122,17 +123,18 @@ int main(int argc, char **argv)
   desired_tool_orientation << 0.5, 0.5, 0.5, 0.5;
   desired_elbow_position << 0.3, -0.3, 0.0;
 
-  std::vector<PikRos::IkTask> ik_tasks_4{ PikRos::IkTask( PikRos::FRAME_POSITION, "tool_frame", desired_tool_position ), 
-                                          PikRos::IkTask( PikRos::FRAME_ORIENTATION, "tool_frame", desired_tool_orientation ), 
-                                          PikRos::IkTask( PikRos::FRAME_POSITION, "forearm_link", desired_elbow_position )};
+  std::vector<PikRos::IkTask> ik_tasks_4{
+    PikRos::IkTask(PikRos::FRAME_POSITION, "tool_frame", desired_tool_position),
+    PikRos::IkTask(PikRos::FRAME_ORIENTATION, "tool_frame", desired_tool_orientation),
+    PikRos::IkTask(PikRos::FRAME_POSITION, "forearm_link", desired_elbow_position)
+  };
 
   std::cout << "\n\nPress Enter to solve task 3\n\n";
-  std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   rviz_vis.publishVisualizationPoints(desired_elbow_position, desired_tool_position, desired_tool_orientation);
   std::cout << "Solving task 4...\n";
 
-  q = pik_kinova.solve( ik_tasks_4,
-                        start_q );
+  q = pik_kinova.solve(ik_tasks_4, start_q);
 
   std::cout << "Errors:\n";
   pik_kinova.printErrors(q, ik_tasks_4);
